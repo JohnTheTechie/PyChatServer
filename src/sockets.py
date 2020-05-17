@@ -1,11 +1,13 @@
 import socket
 from enum import Enum
 import queue
-import threading
-import thread_handlers
+import logging
 
 
 class SockAddressContainer:
+    """
+    address capsule for socket address
+    """
     def __init__(self, address="localhost", port=42424):
         self.address = address
         self.port = port
@@ -18,11 +20,17 @@ class SockAddressContainer:
 
 
 class SocketType(Enum):
+    """
+    enumeration class for types of sockets to be used
+    """
     SOCKET_CLIENT = 0x01
     SOCKET_SERVER = 0x02
 
 
 class SocketConnection:
+    """
+    Base class for sockets
+    """
     def __init__(self, address_con: SockAddressContainer, s_type: SocketType):
         self.s_type = s_type
         self.address_container = address_con
@@ -31,21 +39,30 @@ class SocketConnection:
 
 
 class ServerSocket(SocketConnection):
+    """
+    socket tuned for listening to connect requests
+    """
     def __init__(self, address_con: SockAddressContainer, s_type: SocketType, socket_queue: queue.Queue):
+        # init the super class
         SocketConnection.__init__(self, address_con, s_type)
+
+        # bind to the project socket address and start listening
         self.socket.bind((self.address_container.address, self.address_container.port))
         self.socket.listen(5)
-        self.socket_queue = socket_queue
-        print(f"{self.__class__} | queue obtained: {self.socket_queue}")
-        print(f"{self.__class__} | server socket created | address: {self.address_container.address} | port: {self.address_container.port}")
 
-    def start_listening(self):
-        pass
+        self.socket_queue = socket_queue
+
+        logging.debug(f"{self.__class__} | queue obtained: {self.socket_queue}")
+        logging.debug(f"{self.__class__} | server socket created | address: {self.address_container.address} |"
+                      f" port: {self.address_container.port}")
 
     def loop_and_look_for_connection_requests(self):
+        """
+        the function initiates infinite loop and listens for the connection request
+        On accepting the socket, the same is pushed to the queue for consumption by the dispatcher
+        """
         while True:
             (conn_socket, address) = self.socket.accept()
-            print(f"{self.__class__} | connection request received | address: {address} | new_socket: {conn_socket}")
+            logging.debug(f"{self.__class__} | connection request received | "
+                          f"address: {address} | new_socket: {conn_socket}")
             self.socket_queue.put(conn_socket)
-
-
