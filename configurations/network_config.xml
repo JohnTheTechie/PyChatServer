@@ -1,0 +1,9 @@
+<?xml version = "1.0"?>
+<data>
+    <maximum_connections type="int">5</maximum_connections>
+    <network_timeout type="int">10</network_timeout>
+    <socket_address>
+        <host_address type="str">localhost</host_address>
+        <port type="int">42424</port>
+    </socket_address>
+</data>

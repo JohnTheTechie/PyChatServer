@@ -1,3 +1,14 @@
+########################################################################################################################
+# author            :   Janakiraman Jothimony
+# created date      :   18-05-2019
+# modified date     :   19-05-2019
+# version           :   1.2
+# description       :   classes defining the main thread components handling the requests
+#                       ClientQueue queues the requests from the server socket
+#                       Dispatcher takes the requests from the ClientQueue, checks the type and dispatches to the
+#                       appropriate worker thread
+########################################################################################################################
+
 from threading import Thread
 from queue import Queue
 import socket
@@ -38,6 +49,10 @@ class ClientQueue:
 class Dispatcher(Thread):
     """
     thread to check the queue and dispatch the tasks to different threads
+
+    Dispatcher is a singleton. Only one dispatcher max would be ever available at any given time.
+    Duty of the dispatcher is to check the ClientQueue for requests, receive the socket, check the context and dispatch
+    the request to the relevant worker thread
     """
 
     __singleton = None
