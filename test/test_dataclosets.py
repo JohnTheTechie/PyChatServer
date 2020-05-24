@@ -22,10 +22,14 @@ class Test_DB_Executor(TestCase):
 class test_AuthPipeline(TestCase):
 
     def setUp(self) -> None:
+        '''
         if os.path.exists("../db/test_chat_db.db"):
             os.remove("../db/test_chat_db.db")
         DB_AuthPipelineBuilder(mock=True).create_table()
         self.pipeline = DB_AuthPipeline(mock=True)
+        '''
+        DB_Builder().build()
+        self.pipeline = DB_AuthPipeline()
 
     def test_auth(self):
         mail_id = "janakiraman3394@gmail.com"

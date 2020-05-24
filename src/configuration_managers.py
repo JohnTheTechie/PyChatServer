@@ -1,13 +1,19 @@
 ########################################################################################################################
 # author            :   Janakiraman Jothimony
 # created date      :   20-05-2019
-# modified date     :   20-05-2019
-# version           :   1
+# modified date     :   24-05-2019
+# version           :   1.1
 # description       :   supply configuration parameters to the rest of the modules
 ########################################################################################################################
 
 import xml.etree.ElementTree as XmlTree
 import os
+from enum import Enum
+
+
+class ConfigClass(Enum):
+    NETWORK = "../configurations/network_config.xml"
+    DATABASE = "../configurations/database_config.xml"
 
 
 class ConfigManager:
@@ -20,8 +26,8 @@ class ConfigManager:
 
     __singleton = None
 
-    def __init__(self):
-        configu_file_location = "../configurations/network_config.xml"
+    def __init__(self, config_class: ConfigClass):
+        configu_file_location = config_class.value
 
         if not os.path.isfile(configu_file_location):
             raise FileNotFoundError
