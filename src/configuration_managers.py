@@ -43,7 +43,7 @@ class ConfigManager:
         :param config_item: configuration tag; if nested, use > for delimiting
         :return: config value; str or int
         """
-        # parsing of the input is needed as to create XPath if needed
+        # parsing of the input is needed to create XPath if needed
         tags = config_item.split("%")
         print(tags)
         query = ""
@@ -60,7 +60,7 @@ class ConfigManager:
 
         # check if the tag is available if not raise an error
         if entry is None:
-            raise Exception(f"invalid nonexistent parameter {query} requested to be read")
+            raise Exception(f'invalid nonexistent parameter "{query}" requested to be read')
 
         # if tag is available then read the attrib. If conversion needed convert and return
         if entry.attrib['type'] == "int":

@@ -5,7 +5,7 @@ import logging
 
 if __name__ == '__main__':
 
-    logging.basicConfig(filename='example.log', level=logging.DEBUG)
+    logging.basicConfig(filename='../logs/example.log', level=logging.DEBUG)
 
     request_queue = thread_handlers.ClientQueue().get_queue()
     logging.debug(f"queue created | {request_queue}")
